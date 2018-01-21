@@ -1,0 +1,29 @@
+#! /apollo/env/envImprovement/bin/zsh
+
+name="${1%.*}"
+if [[ -f "$name" ]]; then
+  echo "Removing executable '$name'" 
+  rm "$name"
+  rm "$name.o"
+fi
+
+obj_file="$name.o"
+echo "Compiling '$1' to '$obj_file' ..."
+nasm -f elf64 -o "$obj_file" "$1"
+
+if [[ ! -f "$obj_file" ]]; then
+	echo "Compilation failed. Aborting."
+	exit -1
+fi
+
+echo "Linking object file '$obj_file' ..."
+ld -o "$name" "$obj_file"
+
+if [[ ! -f "$name" ]]; then
+	echo "Linkage failed. Aborting."
+	exit -1
+fi
+
+shift
+echo "Executing '$name $*'"
+./"$name" "$*"

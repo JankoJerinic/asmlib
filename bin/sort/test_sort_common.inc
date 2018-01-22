@@ -17,12 +17,14 @@ global _start
 
 %ifidn SORT_ALGORITHM,quick_sort
 	%include "../../lib/sort/sort_quick.asm"
+%elifidn SORT_ALGORITHM,heap_sort
+	%include "../../lib/sort/sort_heap.asm"
 %elifidn SORT_ALGORITHM,insertion_sort
 	%include "../../lib/sort/sort_insertion.asm"
 %elifidn SORT_ALGORITHM,selection_sort
 	%include "../../lib/sort/sort_selection.asm"
 %else
-	%error Must specify a valid SORT_ALGORITHM: quick_sort, insertion_sort, selection_sort
+	%error Must specify a valid SORT_ALGORITHM: quick_sort, heap_sort, insertion_sort, selection_sort
 %endif
 
 %ifdef I64
@@ -51,7 +53,8 @@ global _start
 %endif
 
 section .data
-	array ELEMENTS 4,2,3,-1,6,1,0,-2,4,2,3,5,-1,1,1,8,10,0,2,1,4
+	array ELEMENTS 5,7,3,1,4,2,0,1,6
+	;array ELEMENTS 4,2,3,-1,6,1,0,-2,4,2,3,5,-1,1,1,8,10,0,2,1,4
 	;array ELEMENTS 7, 6, 2, 3, 5, 4, 1, 3, 4
 	;array ELEMENTS 4,13,1,2,3,6,0,1,-2,2,-13,54,42
 	array_len equ $-array
